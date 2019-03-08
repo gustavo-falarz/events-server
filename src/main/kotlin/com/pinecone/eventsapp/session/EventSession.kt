@@ -8,13 +8,12 @@ import java.util.*
 @Component
 class EventSession(val eventRepository: EventRepository,
                    val attendeeSession: AttendeeSession,
-                   val placeSession: PlaceSession,
-                   val userSession: UserSession) : Session() {
+                   val placeSession: PlaceSession ) : Session() {
 
     fun addEvent(userId: String,
                  placeId: String,
                  dateTime: Long) {
-        val organizer = userSession.findUserById(userId)
+        val organizer = attendeeSession.findAttendeeById(userId)
         val place = placeSession.findPlaceById(placeId)
         val date = Date(dateTime)
         val event = Event(organizer, date, place,mutableListOf())
@@ -23,16 +22,16 @@ class EventSession(val eventRepository: EventRepository,
 
     fun getEvents(): MutableList<Event> = eventRepository.findAll()
 
-    fun getEventById(id: String): Optional<Event> {
+    fun getEventById(id: String): Event {
         val event = eventRepository.findById(id)
         when {
-            event.isPresent -> return event
+            event.isPresent -> return event.get()
             else -> throw Exception(message("error.event-not-found"))
         }
     }
 
     fun registerAttendee(attendeeId: String, eventId: String): Event {
-        val event = getEventById(eventId).get()
+        val event = getEventById(eventId)
         val attendee = attendeeSession.findAttendeeById(attendeeId)
         when {
             event.attendees.contains(attendee) -> {
@@ -46,7 +45,7 @@ class EventSession(val eventRepository: EventRepository,
     }
 
     fun removeAttendee(attendeeId: String, eventId: String): Event {
-        val event = getEventById(eventId).get()
+        val event = getEventById(eventId)
         val attendee = attendeeSession.findAttendeeById(attendeeId)
         when {
             event.attendees.contains(attendee) -> {
