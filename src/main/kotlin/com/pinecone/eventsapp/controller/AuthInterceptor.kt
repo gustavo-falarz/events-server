@@ -15,9 +15,9 @@ class AuthInterceptor : HandlerInterceptorAdapter() {
 
     @Throws(Exception::class)
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-//        if (getController(ALGUM_CONTROLLER::class.java, handler) != null) {
-//            return true
-//        }
+        if (getController(AttendeeController::class.java, handler) != null) {
+            return true
+        }
 
         val token = request.getHeader("Access-Token")
         return try {

@@ -25,8 +25,6 @@ class LocaleConfig: AcceptHeaderLocaleResolver(), WebMvcConfigurer {
         }
     }
 
-
-
     @Bean
     fun messageSource(): ResourceBundleMessageSource {
         val rs = ResourceBundleMessageSource()

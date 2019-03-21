@@ -15,5 +15,8 @@ class AttendeeController(val attendeeSession: AttendeeSession) {
     @GetMapping
     fun getAttendees() = attendeeSession.getAttendees()
 
+    @GetMapping("/update-role")
+    fun updateRole(@RequestParam("userId") userId: String,
+                   @RequestParam("role") role: Attendee.Role) =attendeeSession.updateRole(userId, role)
 
 }

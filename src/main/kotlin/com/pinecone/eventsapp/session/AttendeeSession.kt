@@ -17,6 +17,12 @@ class AttendeeSession(val attendeeRepository: AttendeeRepository) : Session() {
 
     fun getAttendees(): List<Attendee> = attendeeRepository.findAll()
 
+    fun updateRole(userId: String, role: Attendee.Role) {
+        val attendee = findAttendeeById(userId)
+        attendee.role = role
+        attendeeRepository.save(attendee)
+    }
+
     fun findAttendeeById(attendeeId: String): Attendee {
         val attendee = attendeeRepository.findById(attendeeId)
         return when {
